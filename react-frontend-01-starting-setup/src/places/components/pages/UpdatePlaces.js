@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import Input from "../../../shared/components/FormElements/Input_temp1";
@@ -36,22 +36,39 @@ const DUMMY_PLACES = [
 
 
 const UpdatePlace = () => {
+    const [isLoading, setIsLoading] = useState(true);
     const placeId = useParams().placeId;
 
     
 
-    const identifiedplace = DUMMY_PLACES.find(p =>p.id === placeId)
-     const [formState, InputHandler] = useForm({
+    
+    
+     const [formState, InputHandler, setFormData] = useForm({
         title:{
-            value: identifiedplace.title,
-            isvalid: true
+            value: '',
+            isValid: false
         },
         description:{
-            value: identifiedplace.description,
+            value: '' ,
+            isValid: false
+        }
+    }, false);
+    const identifiedplace = DUMMY_PLACES.find(p =>p.id === placeId);
+useEffect(() => {
+    setFormData({
+        title:{
+            value: identifiedplace.title,
+            isValid: true
+        },
+        description:{
+            value: identifiedplace.description ,
             isValid: true
         }
-    }, true)
+    }, true);
 
+setIsLoading(false);
+}, [setFormData, identifiedplace]);
+    
     const placeUpdateSubmitHandler = event => {
         event.preventDefault();
         console.log(formState.inputs)
@@ -59,16 +76,23 @@ const UpdatePlace = () => {
     };
 
 
-    if(!identifiedplace) {
-        return(
-            <div className="center">
-                <h2> Could not find the place!</h2>
-
-            </div>
-        );
-    }
-    
+     if (!identifiedplace) {
     return (
+      <div className="center">
+        <h2>Could not find the place!</h2>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="center">
+        <h2>Loading...</h2>
+      </div>
+    );
+  }
+    return (
+        
   <div className="center">
     <form className="place-form" onSubmit = {placeUpdateSubmitHandler}>
       {/* Title */}
