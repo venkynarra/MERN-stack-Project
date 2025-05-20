@@ -24,14 +24,18 @@ const inputReducer = (state, action) => {
 };
 
 const Input = props => {
-    const [inputState, dispatch] = useReducer(inputReducer, {value:props.initialValue || '',  isTouched: false, isValid: props.initialValid || false});
+  const [inputState, dispatch] = useReducer(inputReducer, {
+    value: props.initialValue || '',
+    isTouched: false,
+    isValid: props.initialValid || false
+  });
 
-    const {id, onInput} = props;
-    const {value, isValid} = inputState;
+  const { id, onInput } = props;
+  const { value, isValid } = inputState;
 
-    useEffect(() => {
-        onInput(id, value, isValid)
-    }, [id, value, isValid, onInput]);
+  useEffect(() => {
+    onInput(id, value, isValid);
+  }, [id, value, isValid, onInput]); // ✅ Now clean
 
     const changeHandler = event => {
         dispatch({type: 'CHANGE', val: event.target.value , validators: props.validators});
