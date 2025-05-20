@@ -4,33 +4,34 @@ import Users from './user/pages/Users';
 import NewPlace from './places/components/pages/NewPlace';
 import UserPlaces from './places/components/pages/UserPlaces';
 import UpdatePlace from './places/components/pages/UpdatePlaces';
+import Auth from './user/pages/Auth';
 import MainNavigation from './shared/components/Navigation/MainNavigation';
 const App = () => {
   return (
   <Router>
-    <MainNavigation />
-    <main>
+  <MainNavigation />
+  <main>
     <Switch>
-    <Route path = "/" exact>    {/* the path / this is ypou can keep any thing after that it will return user path, exact = true  */}
-    <Users/>
-    </Route>
-    <Route path="/:userId/places" exact>
-    <UserPlaces />
-    </Route>
-    <Route path = "/places/new" exact>    {/* the path / this is ypou can keep any thing after that it will return user path, exact = true  */}
-    <NewPlace/>{/* NewPlace as a self render component*/}
-    </Route>
-    <Route path="/places/:placeId" exact>
-    <UpdatePlace />
-   </Route>
-
-
-    <Redirect to = "/"/> {/*  redirect is when you enter after the / you will redirect to the same url */}
+      <Route path="/" exact>
+        <Users />
+      </Route>
+      <Route path="/:userId/places" exact>
+        <UserPlaces />
+      </Route>
+      <Route path="/places/new" exact>
+        <NewPlace />
+      </Route>
+      <Route path="/places/:placeId" exact>
+        <UpdatePlace />
+      </Route>
+      <Route path="/auth" exact>
+        <Auth />
+      </Route>
+      <Redirect to="/" />
     </Switch>
-    </main>
-  
-  
-  </Router>
+  </main>
+</Router>
+
   );
 };
 
