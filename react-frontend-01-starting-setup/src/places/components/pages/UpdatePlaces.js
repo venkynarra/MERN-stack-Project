@@ -21,8 +21,8 @@ const DUMMY_PLACES = [
     },
     {
         id: 'p2',
-        title: 'Empire State Building',
-        description: 'best sky scrapers',
+        title: 'Emp. State Building',
+        description: 'Sky Scrapers in New York!',
         imageUrl: '/images/venky.png',
         address: '20 W 34th St, New York, NY 10001',
         location :{
@@ -55,7 +55,8 @@ const UpdatePlace = () => {
     }, false);
     const identifiedplace = DUMMY_PLACES.find(p =>p.id === placeId);
 useEffect(() => {
-    setFormData({
+    if (identifiedplace){
+        setFormData({
         title:{
             value: identifiedplace.title,
             isValid: true
@@ -65,6 +66,9 @@ useEffect(() => {
             isValid: true
         }
     }, true);
+
+    }
+    
 
 setIsLoading(false);
 }, [setFormData, identifiedplace]);
@@ -76,21 +80,21 @@ setIsLoading(false);
     };
 
 
-     if (!identifiedplace) {
-    return (
-      <div className="center">
-        <h2>Could not find the place!</h2>
-      </div>
-    );
-  }
+     if (isLoading) {
+  return (
+    <div className="center">
+      <h2>Loading...</h2>
+    </div>
+  );
+}
 
-  if (isLoading) {
-    return (
-      <div className="center">
-        <h2>Loading...</h2>
-      </div>
-    );
-  }
+if (!identifiedplace) {
+  return (
+    <div className="center">
+      <h2>Could not find the place!</h2>
+    </div>
+  );
+}
     return (
         
   <div className="center">
