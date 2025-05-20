@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import Input from "../../../shared/components/FormElements/Input_temp1";
 import Button from "../../../shared/components/FormElements/Button";
 import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from "../../../shared/util/validators";
+import './PlaceForm.css'
 const DUMMY_PLACES = [
     {
         id: 'p1',
@@ -39,24 +40,48 @@ const UpdatePlace = () => {
     if(!identifiedplace) {
         return(
             <div className="center">
-                <h2> Could not fin the place!</h2>
+                <h2> Could not find the place!</h2>
 
             </div>
         );
     }
     
-    return <form>
-        <Input id="title" element = "input" type = "text" label= "Title" validators = {[VALIDATOR_REQUIRE()]}
-        errortext="Please enter a valid title." onInput={()=> {}} value ={identifiedplace.title} valid={true}/>
+    return (
+  <div className="center">
+    <form className="place-form">
+      {/* Title */}
+      <Input
+        id="title"
+        element="input"
+        type="text"
+        label="Title"
+        validators={[VALIDATOR_REQUIRE()]}
+        errorText="Please enter a valid title."
+        onInput={() => {}}
+        value={identifiedplace.title}
+        valid={true}
+      />
 
+      {/* Description */}
+      <Input
+        id="description"
+        element="textarea"
+        label="Description"
+        validators={[VALIDATOR_MINLENGTH(5)]}
+        errorText="Please enter a valid description (min 5 characters)."
+        onInput={() => {}}
+        value={identifiedplace.description}
+        valid={true}
+      />
 
-        <Input id="description" element = "textarea"  label= "Description" validators = {[VALIDATOR_MINLENGTH(5)]}
-        errortext="Please enter a valid description of (min 5 charecters)." onInput={()=> {}} value ={identifiedplace.description} valid={true}/>
+      {/* Submit */}
+      <Button type="submit" disabled={false}>
+        UPDATE PLACE
+      </Button>
+    </form>
+  </div>
+);
 
-        <Button type="submit" disabled={true}>UPDATE PLACE</Button>
-
-
-    </form>;
 
 };
 export default UpdatePlace;
