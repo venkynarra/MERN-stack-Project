@@ -1,0 +1,15 @@
+.side-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 70%;
+  max-width: 20rem;
+  height: 100vh;
+  background: white;
+  box-shadow: 1px 0px 7px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  padding: 2rem 1rem;
+  transform: translateX(0);
+  transition: transform 0.3s ease-out;
+}
+ 
