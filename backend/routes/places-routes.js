@@ -1,4 +1,5 @@
 const express = require('express');
+const HttpError = require('../models/http-error');
 
 const router = express.Router();
 
@@ -24,9 +25,9 @@ router.get('/:pid',(req, res, next) => {
     });
 
     if (!place) {
-        const error = new Error("could not find the place for provided Id!");
-        error.code = 404;
-        throw error;
+        throw new HttpError("could not find the place for provided Id!", 404);
+        
+         
     } 
         res.json({place});
     
@@ -43,9 +44,9 @@ router.get('/user/:uid', (req, res, next) => {
         return p.creator === userId;
 
     });if (!place) {
-        const error = new Error("could not find the place for provided User Id!");
-        error.code = 404;
-         return next(error);
+        return next(
+         new HttpError("could not find the place for provided User Id!", 404)
+        );
     } 
     
     res.json({place});
