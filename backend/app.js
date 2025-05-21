@@ -6,7 +6,9 @@ const placesRoutes = require('./routes/places-routes');
 
 const app = express();
 
-app.use('/api/places', placesRoutes);
+app.use(bodyParser.json());
+
+app.use('/api/places', placesRoutes);// these are middlewares registering.
 
 
 app.use((error, req, res, next) => {
