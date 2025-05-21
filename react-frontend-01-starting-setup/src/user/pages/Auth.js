@@ -5,9 +5,11 @@ import Input from "../../shared/components/FormElements/Input_temp1";
 import Button from "../../shared/components/FormElements/Button";
 import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE} from "../../shared/util/validators";
 import { useForm } from "../../shared/hooks/form-hook";
-import { useState } from "react";
+import { AUthContext } from "../../shared/context/auth-context";
+import { useState, useContext } from "react";
 
 const Auth = () => {
+    const auth = useContext(AUthContext);
     const [isLoginMode, setIsLoginMode] = useState(true);
  const [formState, InputHandler, setFormData] = useForm({
     email:{
@@ -48,6 +50,7 @@ const switchModeHandler = () => {
     const authSubmitHandler = event => {
         event.preventDefault();
         console.log(formState.inputs);
+        auth.login();
 
     };
     return (

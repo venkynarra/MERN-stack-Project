@@ -20,15 +20,16 @@ const logout= useCallback(() => {
     setIsLoggedIn(false);
   }, []);
 
-  return (
-    <AUthContext.Provider value={{isLoggedIn: isLoggedIn, login: login, logout: logout}}>
-  <Router>
-  <MainNavigation />
-  <main>
+  let routes;
+
+if (isLoggedIn) {
+  routes = (
     <Switch>
       <Route path="/" exact>
         <Users />
       </Route>
+    
+
       <Route path="/:userId/places" exact>
         <UserPlaces />
       </Route>
@@ -38,11 +39,38 @@ const logout= useCallback(() => {
       <Route path="/places/:placeId" exact>
         <UpdatePlace />
       </Route>
+      
+      <Redirect to="/" />
+      </Switch>
+  );
+
+}else {
+  routes = (
+    <Switch>
+    <Route path="/" exact>
+        <Users />
+      </Route>
+
+      <Route path="/:userId/places" exact>
+        <UserPlaces />
+      </Route>
       <Route path="/auth" exact>
         <Auth />
       </Route>
-      <Redirect to="/" />
-    </Switch>
+      <Redirect to="/auth" />
+      </Switch>
+  );
+}
+
+
+  return (
+    <AUthContext.Provider value={{isLoggedIn: isLoggedIn, login: login, logout: logout}}>
+  <Router>
+  <MainNavigation />
+  <main>
+    
+      {routes}
+    
   </main>
 </Router>
 </AUthContext.Provider>
