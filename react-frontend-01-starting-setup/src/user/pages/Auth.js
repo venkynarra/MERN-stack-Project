@@ -14,7 +14,7 @@ const Auth = () => {
  const [formState, InputHandler, setFormData] = useForm({
     email:{
         value: '',
-        isVlaid: false
+        isValid: false
     },
     password: {
        value: '',
@@ -47,12 +47,37 @@ const switchModeHandler = () => {
 
 
 
-    const authSubmitHandler = event => {
-        event.preventDefault();
-        console.log(formState.inputs);
-        auth.login();
+    const authSubmitHandler = async event => {
+  event.preventDefault();
 
-    };
+  if (!isLoginMode) {
+    try {
+      const response = await fetch('http://localhost:5000/api/users/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: formState.inputs.name.value,
+          email: formState.inputs.email.value,
+          password: formState.inputs.password.value
+        })
+      });
+
+      const responseData = await response.json();
+      if (!response.ok) {
+        throw new Error(responseData.message || 'Signup failed!');
+      }
+
+      console.log('Signup successful:', responseData);
+      auth.login(); // proceed with login
+    } catch (err) {
+      console.error('Signup error:', err.message);
+    }
+  } else {
+    // login mode code
+  }
+};
     return (
         <Card className="authentication">
  
