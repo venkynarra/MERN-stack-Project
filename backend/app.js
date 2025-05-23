@@ -1,6 +1,7 @@
 const express = require('express');
 
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const placesRoutes = require('./routes/places-routes');
 const HttpError = require('./models/http-error');
@@ -32,6 +33,11 @@ app.use((error, req, res, next) => {
 });
 
 
+mongoose.connect('mongodb+srv://venky1:Venky1@cluster0.bhbfxpw.mongodb.net/places?retryWrites=true&w=majority&appName=Cluster0').then(()=> {
+    app.listen(5000);
+
+}).catch(err => {
+    console.log(err);
+});
 
 
-app.listen(5000);
