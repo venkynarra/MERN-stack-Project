@@ -50,19 +50,27 @@ let place;
 
 };
 
-const getPlacesByUserId = (req, res, next) => {
+const getPlacesByUserId = async (req, res, next) => {
     const userId = req.params.uid;
+let places;
+try{
+    places = await Place.find({creator: userId}).exec();
 
-    const places = DUMMY_PLACES.filter(p => {
-        return p.creator === userId;
-
-    });if (!places || places.length === 0) {
+}catch(err){
+    const error = new HttpError(
+        'fetching places failed, please try again', 500
+    );
+    return next(error);
+}
+     
+    
+    if (!places || places.length === 0) {
         return next(
          new HttpError("could not find the places for provided User Id!", 404)
         );
     } 
     
-    res.json({places});
+    res.json({places: places.map(place => place.toObject({getters: true}))}); // getters makes data clean convert monggos eobject into javascripit object
 
 
 };
