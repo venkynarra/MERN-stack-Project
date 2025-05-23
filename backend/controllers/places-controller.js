@@ -23,18 +23,26 @@ let DUMMY_PLACES = [
 ];
 
 
-const getPlaceById = (req, res, next) => {
+const getPlaceById =async (req, res, next) => {
     const placeId = req.params.pid;
-    const place = DUMMY_PLACES.find(p => {
-        return p.id === placeId
-    });
+let place;
+    try{
+        place =  await Place.findById(placeId); //mongoose
+    }catch (err){
+        const error = new HttpError(
+            'could not find the place something went wrong', 500
+        );
+
+        return next(error);
+    }
 
     if (!place) {
-        throw new HttpError("could not find the place for provided Id!", 404);
+        const error = new HttpError("could not find the place for provided Id!", 404);
+        return next(error);
         
          
     } 
-        res.json({place});
+        res.json({place: place.toObject({getters: true})}); 
     
     
 
