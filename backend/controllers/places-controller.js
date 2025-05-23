@@ -180,27 +180,29 @@ const deletePlace = async (req, res, next) => {
 
   let place;
   try {
-    place = await Place.findById(placeId);
-    console.log('Found place:', place);
+    place = await Place.findById(placeId).populate('creator');
   } catch (err) {
     console.error('Error in findById:', err);
-    const error = new HttpError('Something went wrong, could not delete the place.', 500);
-    return next(error);
+    return next(new HttpError('Something went wrong, could not delete the place.', 500));
   }
 
   if (!place) {
-    console.log('No place found for id:', placeId);
-    const error = new HttpError('Could not find place for this id.', 404);
-    return next(error);
+    // This is the fix:
+    return res.status(200).json({ message: 'Place already deleted or not found.' });
   }
 
   try {
-    await Place.findByIdAndDelete(placeId); // or: await Place.findByIdAndDelete(placeId)
-    console.log('Place removed successfully');
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+
+    await Place.deleteOne({ _id: placeId }, { session: sess });
+    place.creator.places.pull(place._id);
+    await place.creator.save({ session: sess });
+
+    await sess.commitTransaction();
   } catch (err) {
-    console.error('Error in remove:', err);
-    const error = new HttpError('Something went wrong, could not delete the place.', 500);
-    return next(error);
+    console.error('Error in delete transaction:', err);
+    return next(new HttpError('Something went wrong, could not delete the place.', 500));
   }
 
   res.status(200).json({ message: 'Deleted place.' });
