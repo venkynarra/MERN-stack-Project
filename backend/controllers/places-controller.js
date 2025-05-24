@@ -8,20 +8,7 @@ const Place = require('../models/place');
 const User = require('../models/user');
 const mongoose = require('mongoose');
 
-let DUMMY_PLACES = [
-    {
-        id:'p1',
-        title: ' Veritis building',
-        description: 'Work building',
-        location: {
-            lat: 32.8925184,
-            lng: -96.976896
-        },
-        address: '141 Greenway drive',
-        creator: 'u1'
 
-    }
-];
 
 
 const getPlaceById =async (req, res, next) => {
@@ -166,7 +153,7 @@ const updatePlace = async (req, res, next) => {
   try{
     await place.save();
   } catch (err){
-    const error = new HttpError('something went wrong cpuld not update the place!', 500);
+    const error = new HttpError('something went wrong could not update the place!', 500);
     return next(error);
   }
 
