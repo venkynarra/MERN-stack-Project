@@ -7,10 +7,13 @@ import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE} from "../../sh
 import { useForm } from "../../shared/hooks/form-hook";
 import { AUthContext } from "../../shared/context/auth-context";
 import { useState, useContext } from "react";
-
+import ErrorModal from "../../shared/components/UIElements/ErrorModal";
+import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 const Auth = () => {
     const auth = useContext(AUthContext);
     const [isLoginMode, setIsLoginMode] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState();
  const [formState, InputHandler, setFormData] = useForm({
     email:{
         value: '',
@@ -49,37 +52,47 @@ const switchModeHandler = () => {
 
     const authSubmitHandler = async event => {
   event.preventDefault();
+  setIsLoading(true);
+  setError(null); // clear any previous error
 
-  if (!isLoginMode) {
-    try {
-      const response = await fetch('http://localhost:5000/api/users/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          name: formState.inputs.name.value,
-          email: formState.inputs.email.value,
-          password: formState.inputs.password.value
-        })
-      });
+  try {
+    const response = await fetch('http://localhost:5000/api/users/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: formState.inputs.name.value,
+        email: formState.inputs.email.value,
+        password: formState.inputs.password.value
+      })
+    });
 
-      const responseData = await response.json();
-      if (!response.ok) {
-        throw new Error(responseData.message || 'Signup failed!');
-      }
+    const responseData = await response.json();
 
-      console.log('Signup successful:', responseData);
-      auth.login(); // proceed with login
-    } catch (err) {
-      console.error('Signup error:', err.message);
+    if (!response.ok) {
+      throw new Error(responseData.message || 'Signup failed!');
     }
-  } else {
-    // login mode code
-  }
+
+    console.log('Signup successful:', responseData);
+    setIsLoading(false);
+    auth.login();
+  } catch (err) {
+    setIsLoading(false);
+    setError(err.message || 'Something went wrong!');
+  } 
 };
+
+const errorHandler = () => {
+    setError(null);
+};
+
     return (
+      <React.Fragment>
+        <ErrorModal error = {error} onClear = {errorHandler}/>
+
         <Card className="authentication">
+            {isLoading && <LoadingSpinner asOverlay/>}
  
     <h2>Login Required</h2>
     <hr />
@@ -102,6 +115,7 @@ const switchModeHandler = () => {
     <Button inverse onClick={switchModeHandler}>SWITCH TO {isLoginMode ? 'SIGNUP' : 'LOGIN'}</Button>
   
   </Card>
+  </React.Fragment>
   
 );
 };
