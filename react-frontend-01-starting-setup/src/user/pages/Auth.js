@@ -63,7 +63,7 @@ const Auth = () => {
         requestBody,
         { 'Content-Type': 'application/json' }
       );
-      auth.login(responseData.userId, responseData.email); // optionally: auth.login(responseData.userId, responseData.token);
+      auth.login(responseData.user.id, responseData.user.email); // optionally: auth.login(responseData.userId, responseData.token);
     } catch (err) {
       // Error is handled in custom hook
     }
