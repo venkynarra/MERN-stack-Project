@@ -25,11 +25,15 @@ const userId = useParams().userId;
       };
       fetchPlaces();
     },[sendRequest, userId]);
+
+    const placeDeletedHandler = deletedPlaceId => {
+setLoadedPlaces(prevPlaces => prevPlaces.filter(place => place.id !== deletedPlaceId ));
+    };
     
     return <React.Fragment>
         <ErrorModal  error = {error} onClear = {clearError}/>
     {isLoading && (<div className=" center"><LoadingSpinner/> </div>)}
-     {!isLoading && loadedplaces && <PlaceList items={loadedplaces}/>}
+     {!isLoading && loadedplaces && <PlaceList items={loadedplaces} onDeletePlace = {placeDeletedHandler}/>}
     </React.Fragment>
   
 };
