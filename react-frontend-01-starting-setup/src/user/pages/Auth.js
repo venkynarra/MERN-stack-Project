@@ -47,36 +47,36 @@ const Auth = () => {
   };
 
   const authSubmitHandler = async event => {
-    event.preventDefault();
+  event.preventDefault();
 
-    let url;
-    if (isLoginMode) {
-      url = 'http://localhost:5000/api/users/login';
-    } else {
-      url = 'http://localhost:5000/api/users/signup';
+  // Use REACT_APP_BACKEND_URL from your .env
+  const baseUrl = process.env.REACT_APP_BACKEND_URL; // should be 'http://localhost:5000/api/'
+
+  let url = isLoginMode
+    ? `${baseUrl}users/login`
+    : `${baseUrl}users/signup`;
+
+  try {
+    const formDataToSend = new FormData();
+    formDataToSend.append('email', formState.inputs.email.value);
+    formDataToSend.append('password', formState.inputs.password.value);
+
+    if (!isLoginMode) {
+      formDataToSend.append('name', formState.inputs.name.value);
+      formDataToSend.append('image', formState.inputs.image.value);
     }
 
-    try {
-      const formDataToSend = new FormData();
-      formDataToSend.append('email', formState.inputs.email.value);
-      formDataToSend.append('password', formState.inputs.password.value);
+    const responseData = await sendRequest(
+      url,
+      'POST',
+      formDataToSend
+    );
 
-      if (!isLoginMode) {
-        formDataToSend.append('name', formState.inputs.name.value);
-        formDataToSend.append('image', formState.inputs.image.value);
-      }
-
-      const responseData = await sendRequest(
-        url,
-        'POST',
-        formDataToSend
-      );
-
-      auth.login(responseData.userId, responseData.token);
-    } catch (err) {
-      // handled by custom hook
-    }
-  };
+    auth.login(responseData.userId, responseData.token);
+  } catch (err) {
+    // handled by custom hook
+  }
+};
 
   return (
     <React.Fragment>
