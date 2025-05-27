@@ -87,7 +87,7 @@ const createPlace = async(req, res, next) => {
         description,
         address,
         location: coordinates,
-        image: 'https://lh3.googleusercontent.com/gps-cs-s/AC9h4nqtfvwK0cjXUWR6D0HAAVBUkXZYj7t1es10q3UYUfhtk-r5hxPYtei_oSLfQUvyNeGi3S2VIe3u2XPrkmN_BRb82BcVeOACfUJhK4ig2QLCkau6u6GEjQmGvGdzCHdW9Jyzzok8=s680-w680-h510-rw',
+        image: 'uploads/images/' + req.file.filename,
         creator
                 
     });

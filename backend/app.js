@@ -1,7 +1,9 @@
 const express = require('express');
+const fs = require('fs');
 
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const path = require('path');
 
 const placesRoutes = require('./routes/places-routes');
 const HttpError = require('./models/http-error');
@@ -10,6 +12,7 @@ const usersRoutes = require('./routes/users-routes');
 const app = express();
 
 app.use(bodyParser.json());
+app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*' );
@@ -21,6 +24,8 @@ app.use((req, res, next) => {
 });
 const cors = require('cors');
 app.use(cors());
+
+
 
 
 app.use('/api/places', placesRoutes);// these are middlewares registering.
@@ -37,10 +42,17 @@ throw error;
 
 
 app.use((error, req, res, next) => {
+    if (req.file){
+        fs.unlink(req.file.path, err => {
+            console.log(err);
+
+        });
+
+    }
     if(res.headerSent){
         return next(error);
     }
-    res.status(error.code || 500);
+   res.status(typeof error.code === 'number' ? error.code : 500);
     res.json({message: error.message || 'AN unknown error occured!'})
 });
 
