@@ -8,14 +8,14 @@ import { useForm } from "../../../shared/hooks/form-hook";
 import { useHttpClient } from "../../../shared/hooks/http-hooks";
 import LoadingSpinner from "../../../shared/components/UIElements/LoadingSpinner";
 import ErrorModal from "../../../shared/components/UIElements/ErrorModal";
-import { AUthContext } from "../../../shared/context/auth-context";
+import { AuthContext } from "../../../shared/context/auth-context";
 import './PlaceForm.css'
 
 
 
 
 const UpdatePlace = () => {
-  const auth = useContext(AUthContext);
+  const auth = useContext(AuthContext);
   const {isLoading, error, sendRequest, clearError} = useHttpClient();
   const[loadedplaces , setLoadedPlaces] = useState();
   

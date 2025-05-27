@@ -6,7 +6,7 @@ import UserPlaces from './places/components/pages/UserPlaces';
 import UpdatePlace from './places/components/pages/UpdatePlaces';
 import Auth from './user/pages/Auth';
 import MainNavigation from './shared/components/Navigation/MainNavigation';
-import { AUthContext } from './shared/context/auth-context';
+import { AuthContext } from './shared/context/auth-context';
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const[userId, setUserId] = useState(null);
@@ -66,7 +66,7 @@ if (isLoggedIn) {
 
 
   return (
-    <AUthContext.Provider value={{isLoggedIn: isLoggedIn, userId: userId, login: login, logout: logout}}>
+    <AuthContext.Provider value={{isLoggedIn: isLoggedIn, userId: userId, login: login, logout: logout}}>
   <Router>
   <MainNavigation />
   <main>
@@ -75,7 +75,7 @@ if (isLoggedIn) {
     
   </main>
 </Router>
-</AUthContext.Provider>
+</AuthContext.Provider>
 
   );
   

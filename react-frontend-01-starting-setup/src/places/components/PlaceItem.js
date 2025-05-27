@@ -3,7 +3,7 @@ import Card from '../../shared/components/UIElements/Card';
 import Button from "../../shared/components/FormElements/Button";
 import Modal from "../../shared/components/UIElements/Modal";
 import Map from "../../shared/components/UIElements/Map";
-import { AUthContext } from "../../shared/context/auth-context";
+import { AuthContext } from "../../shared/context/auth-context";
 import { useHttpClient } from "../../shared/hooks/http-hooks";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
@@ -11,7 +11,7 @@ import './PlaceItem.css';
 
 const PlaceItem = props => {
     const {isLoading, error, sendRequest, clearError} = useHttpClient();
-    const auth = useContext(AUthContext);
+    const auth = useContext(AuthContext);
     const [showMap, setShowMap] = useState(false);
 
     const [showConfirmModal, setShowConfirmModal] = useState(false);
