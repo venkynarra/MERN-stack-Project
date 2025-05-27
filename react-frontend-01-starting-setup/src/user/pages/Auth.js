@@ -72,7 +72,7 @@ const Auth = () => {
         formDataToSend
       );
 
-      auth.login(responseData.user.id, responseData.user.email);
+      auth.login(responseData.userId, responseData.token);
     } catch (err) {
       // handled by custom hook
     }

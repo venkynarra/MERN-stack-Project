@@ -59,7 +59,9 @@ const NewPlace = () => {
             await sendRequest(
   'http://localhost:5000/api/places',
   'POST',                 // ✅ HTTP method
-  formData                // ✅ Request body (FormData)
+  formData , {
+    Authorization: 'Bearer ' + auth.token
+  }              // ✅ Request body (FormData)
   // no headers needed for FormData
 );
     history.push('/');
