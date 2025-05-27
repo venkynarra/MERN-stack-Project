@@ -20,7 +20,7 @@ router.post('/signup',
     check('password').isLength({min: 6})
 ], userController.signup);
 
-router.post('/login',userController.login);
+router.post('/login', fileUpload.none(), userController.login);
 
 
 module.exports = router;

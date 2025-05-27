@@ -7,6 +7,7 @@ const getCoordsForAddress = require('../util/location');
 const Place = require('../models/place');
 const User = require('../models/user');
 const mongoose = require('mongoose');
+const fs = require('fs');
 
 
 
@@ -177,6 +178,7 @@ const deletePlace = async (req, res, next) => {
     // This is the fix:
     return res.status(200).json({ message: 'Place already deleted or not found.' });
   }
+  const imagePath = place.image;
 
   try {
     const sess = await mongoose.startSession();
@@ -191,6 +193,9 @@ const deletePlace = async (req, res, next) => {
     console.error('Error in delete transaction:', err);
     return next(new HttpError('Something went wrong, could not delete the place.', 500));
   }
+  fs.unlink(imagePath, err => {
+    console.log(err);
+  });
 
   res.status(200).json({ message: 'Deleted place.' });
 };
