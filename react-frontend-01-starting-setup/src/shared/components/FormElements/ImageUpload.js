@@ -14,7 +14,7 @@ useEffect(() => {
     const fileReader = new FileReader();
     fileReader.onload = () => {
         setpreviewUrl(fileReader.result);
-    };
+    }; 
     fileReader.readAsDataURL(file);
 }, [file]);
 

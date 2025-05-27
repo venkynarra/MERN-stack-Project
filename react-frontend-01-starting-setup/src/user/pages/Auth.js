@@ -18,7 +18,9 @@ const Auth = () => {
 
   const [formState, InputHandler, setFormData] = useForm({
     email: { value: '', isValid: false },
-    password: { value: '', isValid: false }
+    password: { value: '', isValid: false },
+    name: { value: '', isValid: false },
+    image: { value: null, isValid: false }
   }, false);
 
   const switchModeHandler = () => {
@@ -32,10 +34,7 @@ const Auth = () => {
       setFormData({
         ...formState.inputs,
         name: { value: '', isValid: false },
-        image: {
-          value: null,
-          isValid: false
-        }
+        image: { value: null, isValid: false }
       }, false);
     }
     setIsLoginMode(prevMode => !prevMode);
@@ -43,36 +42,34 @@ const Auth = () => {
 
   const authSubmitHandler = async event => {
     event.preventDefault();
-    console.log(formState.inputs)
 
     let url;
-    let requestBody;
 
     if (isLoginMode) {
       url = 'http://localhost:5000/api/users/login';
-      requestBody = JSON.stringify({
-        email: formState.inputs.email.value,
-        password: formState.inputs.password.value
-      });
     } else {
       url = 'http://localhost:5000/api/users/signup';
-      requestBody = JSON.stringify({
-        name: formState.inputs.name.value,
-        email: formState.inputs.email.value,
-        password: formState.inputs.password.value
-      });
     }
 
     try {
+      const formData = new FormData();
+      formData.append('email', formState.inputs.email.value);
+      formData.append('password', formState.inputs.password.value);
+
+      if (!isLoginMode) {
+        formData.append('name', formState.inputs.name.value);
+        formData.append('image', formState.inputs.image.value);
+      }
+
       const responseData = await sendRequest(
         url,
         'POST',
-        requestBody,
-        { 'Content-Type': 'application/json' }
+        formData
       );
-      auth.login(responseData.user.id, responseData.user.email); // optionally: auth.login(responseData.userId, responseData.token);
+
+      auth.login(responseData.user.id, responseData.user.email);
     } catch (err) {
-      // Error is handled in custom hook
+      // handled in custom hook
     }
   };
 
@@ -95,7 +92,7 @@ const Auth = () => {
               onInput={InputHandler}
             />
           )}
-          {!isLoginMode && <ImageUpload  center id = "image" onInput= {InputHandler}/>}
+          {!isLoginMode && <ImageUpload center id="image" onInput={InputHandler} errorText="Please provide an image." />}
           <Input
             element="input"
             id="email"
