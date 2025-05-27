@@ -89,12 +89,12 @@ const createPlace = async(req, res, next) => {
         address,
         location: coordinates,
         image: 'uploads/images/' + req.file.filename,
-        creator
+        creator: req.userData.userId
                 
     });
    let user;
    try{
-    user =  await User.findById(creator);
+    user =  await User.findById(req.userData.userId);
 
    }catch (err){
     const error = new HttpError('creating place failed',500 );
@@ -146,6 +146,12 @@ const updatePlace = async (req, res, next) => {
     return next(error);
   };
 
+  if(place.creator.toString() !== req.userData.userId){
+     const error = new HttpError('you are not allowed to edit this place!', 401);
+    return next(error);
+
+  }
+
  
 
    place.title = title;
@@ -174,10 +180,18 @@ const deletePlace = async (req, res, next) => {
     return next(new HttpError('Something went wrong, could not delete the place.', 500));
   }
 
+
   if (!place) {
     // This is the fix:
     return res.status(200).json({ message: 'Place already deleted or not found.' });
   }
+
+  if(place.creator.id !== req.userData.userId){
+    const error = new HttpError('you are not allowed to delete this place!', 403);
+    return next(error);
+
+
+  };
   const imagePath = place.image;
 
   try {
