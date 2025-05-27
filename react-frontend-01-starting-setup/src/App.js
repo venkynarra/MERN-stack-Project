@@ -1,6 +1,6 @@
 import React from 'react';
 import {BrowserRouter as Router, Route, Redirect, Switch} from 'react-router-dom';
-import Users from './user/pages/Users';
+ import Users from './user/pages/Users';
 import NewPlace from './places/components/pages/NewPlace';
 import UserPlaces from './places/components/pages/UserPlaces';
 import UpdatePlace from './places/components/pages/UpdatePlaces';
@@ -8,6 +8,8 @@ import Auth from './user/pages/Auth';
 import MainNavigation from './shared/components/Navigation/MainNavigation';
 import { AuthContext } from './shared/context/auth-context';
 import { useAuth } from './shared/hooks/auth-hook';
+
+
 
 
 const App = () => {

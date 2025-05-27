@@ -53,8 +53,8 @@ const Auth = () => {
   const baseUrl = process.env.REACT_APP_BACKEND_URL; // should be 'http://localhost:5000/api/'
 
   let url = isLoginMode
-    ? `${baseUrl}users/login`
-    : `${baseUrl}users/signup`;
+    ? `${baseUrl}/users/login`
+    : `${baseUrl}/users/signup`;
 
   try {
     const formDataToSend = new FormData();
