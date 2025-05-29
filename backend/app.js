@@ -34,6 +34,7 @@ app.use('/api/users', usersRoutes);
 
 // Unknown route handler
 app.use((req, res, next) => {
+  console.log(' Unknown Route Hit:', req.method, req.originalUrl);
   const error = new HttpError('Could not find this route.', 404);
   throw error;
 });

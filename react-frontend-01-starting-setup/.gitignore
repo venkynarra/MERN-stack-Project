@@ -17,10 +17,22 @@
 .env.development.local
 .env.test.local
 .env.production.local
-
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 .env
 .env.production
 
+# Firebase-related files
+react-frontend-01-starting-setup/.firebase/
+react-frontend-01-starting-setup/.firebaserc
+react-frontend-01-starting-setup/firebase.json
+react-frontend-01-starting-setup/y/
+
+# GitHub Actions or CI configs (not needed here)
+.github/
+
+# Procfile (used for Heroku or deployment - you don't want to include)
+backend/procfile
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
